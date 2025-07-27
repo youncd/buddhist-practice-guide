@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🙏 불교 수행 가이드 - 종합 학습 플랫폼</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .title {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .description {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .card-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        
+        .card-description {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .card-features {
+            margin-bottom: 25px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        .feature-item::before {
+            content: '✅';
+            margin-right: 10px;
+        }
+        
+        .card-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stats-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-content {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .github-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+        
+        .github-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 2.2em;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <div class="logo">🙏</div>
+            <h1 class="title">불교 수행 가이드</h1>
+            <p class="subtitle">심념처에서 해탈까지 - 종합 학습 플랫폼</p>
+            <div class="description">
+                부처님의 2500년 전 가르침을 현대적 방법으로 학습할 수 있는 
+                인터랙티브 교육 플랫폼입니다. 게임, 애니메이션, 과학적 근거를 
+                통해 불교 수행의 전 과정을 체험해보세요.
+            </div>
+        </div>
+        
+        <div class="content-grid">
+            
+            <div class="content-card">
+                <div class="card-icon">🎮</div>
+                <h2 class="card-title">마음챙김 여행 게임</h2>
+                <p class="card-description">
+                    14가지 마음을 깨우쳐 해탈에 이르는 단계별 게임입니다. 
+                    중학생도 쉽게 이해할 수 있도록 재미있게 구성했습니다.
+                </p>
+                <div class="card-features">
+                    <div class="feature-item">6단계 레벨 시스템</div>
+                    <div class="feature-item">실시간 점수 및 등급</div>
+                    <div class="feature-item">인터랙티브 퀴즈</div>
+                    <div class="feature-item">삼법인 체험 게임</div>
+                </div>
+                <a href="game.html" class="card-button">🎮 게임 시작하기</a>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-icon">🧘‍♂️</div>
+                <h2 class="card-title">자동 설명 교육 콘텐츠</h2>
+                <p class="card-description">
+                    지혜 스님 캐릭터가 자동으로 불교 수행법을 설명해주는 
+                    플래시형 교육 자료입니다.
+                </p>
+                <div class="card-features">
+                    <div class="feature-item">7단계 자동 프레젠테이션</div>
+                    <div class="feature-item">캐릭터 실시간 해설</div>
+                    <div class="feature-item">시각적 애니메이션</div>
+                    <div class="feature-item">호흡법 정확한 안내</div>
+                </div>
+                <a href="education.html" class="card-button">🧘‍♂️ 학습 시작하기</a>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-icon">🔬</div>
+                <h2 class="card-title">과학과 불교의 융합</h2>
+                <p class="card-description">
+                    부처님 가르침이 현대 뇌과학, 유전학, 물리학과 어떻게 
+                    일치하는지 보여주는 과학적 콘텐츠입니다.
+                </p>
+                <div class="card-features">
+                    <div class="feature-item">1000+ 연구논문 근거</div>
+                    <div class="feature-item">뇌과학 시각화</div>
+                    <div class="feature-item">DNA 애니메이션</div>
+                    <div class="feature-item">양자물리학 연관성</div>
+                </div>
+                <a href="science.html" class="card-button">🔬 과학 탐구하기</a>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-icon">🏗️</div>
+                <h2 class="card-title">수행 아키텍처</h2>
+                <p class="card-description">
+                    심념처에서 해탈까지 6층 구조의 완전한 수행 체계를 
+                    자동으로 건설하며 학습하는 시스템입니다.
+                </p>
+                <div class="card-features">
+                    <div class="feature-item">6층 자동 건설 시스템</div>
+                    <div class="feature-item">계정혜 삼학 순환</div>
+                    <div class="feature-item">실시간 가이드 해설</div>
+                    <div class="feature-item">완성 축하 효과</div>
+                </div>
+                <a href="architecture.html" class="card-button">🏗️ 건설 시작하기</a>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-icon">🧠</div>
+                <h2 class="card-title">마음상태 벡터 시각화</h2>
+                <p class="card-description">
+                    14가지 마음과 52가지 마음상태를 벡터 형식으로 
+                    시각화한 인터랙티브 자료입니다.
+                </p>
+                <div class="card-features">
+                    <div class="feature-item">SVG 벡터 그래픽</div>
+                    <div class="feature-item">카테고리별 색상 코딩</div>
+                    <div class="feature-item">클릭 상세 설명</div>
+                    <div class="feature-item">PDF 다운로드</div>
+                </div>
+                <a href="vectors.html" class="card-button">🧠 시각화 보기</a>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-icon">📚</div>
+                <h2 class="card-title">법문 시각화 자료</h2>
+                <p class="card-description">
+                    윤창대 법사님의 새벽 범문을 완전히 정리하고 
+                    시각화한 PDF 다운로드 가능한 자료입니다.
+                </p>
+                <div class="card-features">
+                    <div class="feature-item">완전한 법문 정리</div>
+                    <div class="feature-item">한글-팔리어 병기</div>
+                    <div class="feature-item">고품질 PDF 지원</div>
+                    <div class="feature-item">시각적 도표 포함</div>
+                </div>
+                <a href="dharma.html" class="card-button">📚 법문 보기</a>
+            </div>
+            
+        </div>
+        
+        <div class="stats-section">
+            <h2 style="font-size: 2em; margin-bottom: 10px; color: #2d3748;">📊 학습 통계</h2>
+            <p style="color: #666; margin-bottom: 20px;">과학적 근거와 전통적 지혜의 만남</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">2500+</div>
+                    <div class="stat-label">년 전 부처님 가르침</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">과학 연구논문 근거</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">가지 핵심 마음상태</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">층 완전한 수행체계</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-content">
+                <strong>🙏 회향</strong><br>
+                부처님 가르침 팔정도 수행으로<br>
+                생로병사 삼세 윤회 모든 고통을 벗어나<br>
+                니바나 성취하길 기원합니다
+            </div>
+            
+            <a href="https://github.com/사용자명/buddhist-practice-guide" class="github-link" target="_blank">
+                📁 GitHub 저장소 보기
+            </a>
+        </div>
+        
+    </div>
+</body>
+</html>
