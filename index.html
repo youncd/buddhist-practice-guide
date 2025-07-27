@@ -458,7 +458,12 @@
             }
             .splash-title { font-size: 2em; }
             .loading-bar { width: 250px; }
-            .btn { padding: 12px 20px; font-size: 1em; }
+            .btn { 
+                padding: 12px 20px; 
+                font-size: 1em;
+                margin: 5px;
+                display: inline-block;
+            }
         }
 
         @media (max-width: 480px) {
@@ -476,6 +481,15 @@
             .mind-segment {
                 padding: 10px;
                 font-size: 0.85em;
+            }
+            .btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+                margin: 3px;
+                display: block;
+                width: 100%;
+                max-width: 200px;
+                margin: 5px auto;
             }
         }
     </style>
@@ -518,6 +532,16 @@
                     <div class="stat-value" id="streak">1</div>
                     <div>연속 수행일</div>
                 </div>
+            </div>
+            
+            <!-- 게임 컨트롤 버튼 -->
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="resetGame()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin: 0 10px;">
+                    🔄 처음부터 시작
+                </button>
+                <button class="btn" onclick="showGameInfo()" style="background: linear-gradient(135deg, #3498db, #2980b9); margin: 0 10px;">
+                    ❓ 게임 설명
+                </button>
             </div>
         </header>
 
@@ -1060,6 +1084,90 @@
                     showScience();
                 }
             }, 30000); // 30초마다
+        }
+
+        // 게임 리셋 함수
+        function resetGame() {
+            // 확인 다이얼로그
+            if (confirm('🔄 정말로 게임을 처음부터 시작하시겠습니까?\n\n모든 진행상황이 삭제됩니다:\n• 레벨 및 경험치\n• 관찰한 마음들\n• 완료한 퀘스트\n• 지혜 포인트')) {
+                
+                // 타이머 중지
+                pauseTimer();
+                
+                // 게임 상태 초기화
+                gameState = {
+                    level: 1,
+                    experience: 0,
+                    wisdom: 0,
+                    streak: 1,
+                    currentTimer: 0,
+                    timerInterval: null,
+                    isTimerRunning: false,
+                    observedMinds: new Set(),
+                    completedQuests: new Set()
+                };
+                
+                // UI 업데이트
+                updateStats();
+                updateMindProgress();
+                resetTimer();
+                
+                // 모든 마인드 세그먼트 비활성화
+                const segments = document.querySelectorAll('.mind-segment');
+                segments.forEach(segment => {
+                    segment.classList.remove('active');
+                });
+                
+                // 퀘스트 재생성
+                generateQuests();
+                
+                // 성취 메시지
+                showAchievement('🔄 게임 리셋 완료!', '새로운 수행 여정을 시작합니다!');
+                
+                // 격려 메시지
+                setTimeout(() => {
+                    showFloatingWisdom('✨ 마음을 비우고 새롭게 시작해보세요!');
+                }, 2000);
+                
+                setTimeout(() => {
+                    showFloatingWisdom('🧘‍♀️ 14가지 마음 관찰의 여정이 다시 시작됩니다');
+                }, 4000);
+            }
+        }
+
+        // 게임 설명 함수
+        function showGameInfo() {
+            const infoText = `
+🧘‍♀️ 14가지 마음 수행 게임 설명
+
+📖 게임 목표:
+부처님이 가르치신 14가지 마음을 관찰하여
+지혜와 해탈의 길을 걸어가는 것입니다.
+
+🎯 14가지 마음:
+• 6가지 감각의식: 눈, 귀, 코, 혀, 몸, 의식
+• 6가지 선불선업: 탐진치 vs 불탐불진불치  
+• 2가지 호흡: 들숨, 날숨
+
+🎮 게임 방법:
+1. 마음 관찰 휠을 돌려 무작위 마음 관찰
+2. 14가지 마음을 하나씩 클릭하여 관찰
+3. 퀘스트 완료로 경험치 획득
+4. 명상 타이머로 실제 수행 실천
+
+🏆 성취 시스템:
+• 6개 관찰: 감각의식 마스터
+• 12개 관찰: 12가지 마음 달성  
+• 14개 관찰: 완전 마스터!
+
+💎 수행의 의미:
+매 순간 알아차리는 것이 해탈의 길입니다.
+"위빠사나 없이 깨닫지 못한다" - 법문 중에서
+
+즐거운 수행 되세요! 🙏
+            `;
+            
+            alert(infoText);
         }
     </script>
 </body>
