@@ -491,6 +491,24 @@
                 max-width: 200px;
                 margin: 5px auto;
             }
+            
+            /* 게임 설명 팝업 모바일 최적화 */
+            .game-info-popup > div {
+                margin: 10px;
+                padding: 20px;
+                max-height: 85vh;
+                font-size: 0.9em;
+            }
+            
+            .game-info-popup h2 {
+                font-size: 1.3em;
+                margin-bottom: 20px;
+            }
+            
+            .game-info-popup h3 {
+                font-size: 1.1em;
+                margin: 15px 0 8px 0;
+            }
         }
     </style>
 </head>
@@ -535,11 +553,13 @@
             </div>
             
             <!-- 게임 컨트롤 버튼 -->
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn" onclick="resetGame()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin: 0 10px;">
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; border: 2px solid rgba(255,235,59,0.3);">
+                <h3 style="margin-bottom: 15px; color: #ffeb3b; font-size: 1.3em;">🎮 게임 컨트롤</h3>
+                <p style="margin-bottom: 15px; opacity: 0.9; font-size: 0.9em;">처음부터 시작하거나 게임 방법을 확인해보세요</p>
+                <button class="btn" onclick="resetGame()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin: 5px 10px; font-size: 1.2em; padding: 15px 30px;">
                     🔄 처음부터 시작
                 </button>
-                <button class="btn" onclick="showGameInfo()" style="background: linear-gradient(135deg, #3498db, #2980b9); margin: 0 10px;">
+                <button class="btn" onclick="showGameInfo()" style="background: linear-gradient(135deg, #3498db, #2980b9); margin: 5px 10px; font-size: 1.2em; padding: 15px 30px;">
                     ❓ 게임 설명
                 </button>
             </div>
@@ -549,7 +569,12 @@
         <div class="game-board">
             <!-- 마음 관찰 휠 -->
             <div class="game-card">
-                <h3 class="card-title">🎯 마음 관찰 휠</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 class="card-title" style="margin: 0;">🎯 마음 관찰 휠</h3>
+                    <button onclick="resetGame()" style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 15px; font-size: 0.9em; cursor: pointer;" title="게임 리셋">
+                        🔄 리셋
+                    </button>
+                </div>
                 <div class="mind-wheel" onclick="spinWheel()">
                     <div class="wheel-center">🧘</div>
                 </div>
@@ -618,6 +643,83 @@
     <!-- 떠다니는 지혜 메시지 -->
     <div class="floating-wisdom" id="floating-wisdom">
         <div id="wisdom-message"></div>
+    </div>
+
+    <!-- 게임 설명 팝업 -->
+    <div class="game-info-popup" id="game-info-popup" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        padding: 20px;
+        box-sizing: border-box;
+    ">
+        <div style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: white;
+            position: relative;
+        ">
+            <button onclick="closeGameInfo()" style="
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                background: rgba(255,255,255,0.2);
+                border: none;
+                color: white;
+                font-size: 1.5em;
+                cursor: pointer;
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">×</button>
+            
+            <h2 style="text-align: center; margin-bottom: 25px; color: #ffeb3b;">🧘‍♀️ 14가지 마음 수행 게임 설명</h2>
+            
+            <div style="line-height: 1.6;">
+                <h3 style="color: #ffeb3b; margin: 20px 0 10px 0;">📖 게임 목표</h3>
+                <p>부처님이 가르치신 14가지 마음을 관찰하여 지혜와 해탈의 길을 걸어가는 것입니다.</p>
+                
+                <h3 style="color: #ffeb3b; margin: 20px 0 10px 0;">🎯 14가지 마음</h3>
+                <p><strong>• 6가지 감각의식:</strong> 👁️눈, 👂귀, 👃코, 👅혀, ✋몸, 🧠의식</p>
+                <p><strong>• 6가지 선불선업:</strong> 탐진치(😤😡😵) vs 불탐불진불치(🙏😌🧘)</p>
+                <p><strong>• 2가지 호흡:</strong> 🫁들숨, 🫁날숨</p>
+                
+                <h3 style="color: #ffeb3b; margin: 20px 0 10px 0;">🎮 게임 방법</h3>
+                <p><strong>1.</strong> 🎯 마음 관찰 휠을 돌려 무작위 마음 관찰</p>
+                <p><strong>2.</strong> 📋 14가지 마음을 하나씩 클릭하여 관찰</p>
+                <p><strong>3.</strong> 🏆 퀘스트 완료로 경험치 획득</p>
+                <p><strong>4.</strong> ⏰ 명상 타이머로 실제 수행 실천</p>
+                
+                <h3 style="color: #ffeb3b; margin: 20px 0 10px 0;">🏆 성취 시스템</h3>
+                <p><strong>• 6개 관찰:</strong> 감각의식 마스터 (+50 경험치)</p>
+                <p><strong>• 12개 관찰:</strong> 12가지 마음 달성 (+100 경험치)</p>
+                <p><strong>• 14개 관찰:</strong> 완전 마스터! (+200 경험치 + 레벨업)</p>
+                
+                <h3 style="color: #ffeb3b; margin: 20px 0 10px 0;">💎 수행의 의미</h3>
+                <p>매 순간 알아차리는 것이 해탈의 길입니다.</p>
+                <p style="font-style: italic; text-align: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                    "위빠사나 없이 깨닫지 못한다" - 법문 중에서
+                </p>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <p style="font-size: 1.1em; color: #ffeb3b;">즐거운 수행 되세요! 🙏</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 성취 팝업 -->
@@ -717,6 +819,13 @@
                 startWisdomFlow();
                 autoGenerateContent();
             }, 4000);
+            
+            // ESC 키로 팝업 닫기
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeGameInfo();
+                }
+            });
         });
 
         // 게임 초기화
@@ -1137,37 +1246,31 @@
 
         // 게임 설명 함수
         function showGameInfo() {
-            const infoText = `
-🧘‍♀️ 14가지 마음 수행 게임 설명
-
-📖 게임 목표:
-부처님이 가르치신 14가지 마음을 관찰하여
-지혜와 해탈의 길을 걸어가는 것입니다.
-
-🎯 14가지 마음:
-• 6가지 감각의식: 눈, 귀, 코, 혀, 몸, 의식
-• 6가지 선불선업: 탐진치 vs 불탐불진불치  
-• 2가지 호흡: 들숨, 날숨
-
-🎮 게임 방법:
-1. 마음 관찰 휠을 돌려 무작위 마음 관찰
-2. 14가지 마음을 하나씩 클릭하여 관찰
-3. 퀘스트 완료로 경험치 획득
-4. 명상 타이머로 실제 수행 실천
-
-🏆 성취 시스템:
-• 6개 관찰: 감각의식 마스터
-• 12개 관찰: 12가지 마음 달성  
-• 14개 관찰: 완전 마스터!
-
-💎 수행의 의미:
-매 순간 알아차리는 것이 해탈의 길입니다.
-"위빠사나 없이 깨닫지 못한다" - 법문 중에서
-
-즐거운 수행 되세요! 🙏
-            `;
+            const popup = document.getElementById('game-info-popup');
+            popup.style.display = 'flex';
             
-            alert(infoText);
+            // 애니메이션 효과
+            popup.style.opacity = '0';
+            setTimeout(() => {
+                popup.style.opacity = '1';
+                popup.style.transition = 'opacity 0.3s ease';
+            }, 10);
+            
+            // 배경 클릭시 닫기
+            popup.onclick = function(e) {
+                if (e.target === popup) {
+                    closeGameInfo();
+                }
+            };
+        }
+
+        // 게임 설명 닫기 함수
+        function closeGameInfo() {
+            const popup = document.getElementById('game-info-popup');
+            popup.style.opacity = '0';
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 300);
         }
     </script>
 </body>
