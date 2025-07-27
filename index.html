@@ -236,8 +236,10 @@
         .mind-segments {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 8px;
             margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .mind-segment {
@@ -438,6 +440,14 @@
             .timer-display { font-size: 2.5em; }
             .player-stats { flex-direction: column; align-items: center; }
             .mind-wheel { width: 150px; height: 150px; }
+            .mind-segments { 
+                grid-template-columns: 1fr;
+                max-height: 300px;
+            }
+            .mind-segment {
+                padding: 12px;
+                font-size: 0.9em;
+            }
             .floating-wisdom { 
                 position: relative; 
                 right: auto; 
@@ -458,6 +468,15 @@
             .meditation-timer { padding: 20px; }
             .stat-item { min-width: 100px; padding: 10px 15px; }
             .mind-wheel { width: 120px; height: 120px; }
+            .mind-segments { 
+                grid-template-columns: 1fr;
+                gap: 6px;
+                max-height: 250px;
+            }
+            .mind-segment {
+                padding: 10px;
+                font-size: 0.85em;
+            }
         }
     </style>
 </head>
@@ -652,11 +671,14 @@
         const quests = [
             { id: 'breathe', text: '10분간 호흡 관찰하기', reward: 50, type: 'meditation' },
             { id: 'observe6', text: '6가지 감각의식 모두 관찰하기', reward: 30, type: 'mindfulness' },
+            { id: 'observe14', text: '14가지 마음 모두 관찰하기', reward: 150, type: 'mindfulness' },
             { id: 'noanger', text: '하루종일 성냄 없이 지내기', reward: 100, type: 'virtue' },
             { id: 'loving', text: '자비명상 5분 실천하기', reward: 40, type: 'meditation' },
             { id: 'impermanence', text: '무상 관찰 15분 하기', reward: 80, type: 'wisdom' },
             { id: 'mindful_eating', text: '마음챙김 식사 한 번 하기', reward: 25, type: 'mindfulness' },
-            { id: 'walking', text: '마음챙김 걷기 10분 하기', reward: 35, type: 'mindfulness' }
+            { id: 'walking', text: '마음챙김 걷기 10분 하기', reward: 35, type: 'mindfulness' },
+            { id: 'wheel_spin', text: '마음 관찰 휠 10번 돌리기', reward: 60, type: 'mindfulness' },
+            { id: 'meditation_20', text: '20분 연속 명상하기', reward: 120, type: 'meditation' }
         ];
 
         // 페이지 로드 시 초기화
@@ -692,13 +714,14 @@
             const container = document.getElementById('mind-segments');
             container.innerHTML = '';
             
-            minds.slice(0, 8).forEach((mind, index) => {
+            // 14가지 마음 모두 표시
+            minds.forEach((mind, index) => {
                 setTimeout(() => {
                     const segment = document.createElement('div');
                     segment.className = 'mind-segment';
                     segment.innerHTML = `
-                        <div style="font-size: 1.2em; margin-bottom: 5px;">${mind.name.split(' ')[0]}</div>
-                        <div style="font-size: 0.9em; opacity: 0.8;">${mind.desc}</div>
+                        <div style="font-size: 1.1em; margin-bottom: 5px;">${mind.name.split(' ')[0]}</div>
+                        <div style="font-size: 0.8em; opacity: 0.8;">${mind.desc}</div>
                     `;
                     segment.onclick = () => observeMind(mind.id);
                     container.appendChild(segment);
@@ -709,7 +732,7 @@
                         segment.style.transform = 'scale(1)';
                         segment.style.transition = 'transform 0.3s ease';
                     }, 50);
-                }, index * 200);
+                }, index * 150);
             });
         }
 
@@ -742,8 +765,17 @@
             
             // 성취 체크
             if (gameState.observedMinds.size === 6) {
-                showAchievement('6가지 감각의식 마스터!', '+100 보너스 경험치');
+                showAchievement('6가지 감각의식 마스터!', '+50 보너스 경험치');
+                gameState.experience += 50;
+                updateStats();
+            } else if (gameState.observedMinds.size === 12) {
+                showAchievement('12가지 마음 관찰 달성!', '+100 보너스 경험치');
                 gameState.experience += 100;
+                updateStats();
+            } else if (gameState.observedMinds.size === 14) {
+                showAchievement('🏆 14가지 마음 완전 마스터!', '+200 보너스 경험치 + 레벨업!');
+                gameState.experience += 200;
+                gameState.level += 1;
                 updateStats();
             }
         }
@@ -844,6 +876,7 @@
         function setTimer(minutes) {
             gameState.currentTimer = minutes * 60;
             updateTimerDisplay();
+            showFloatingWisdom(`${minutes}분 타이머가 설정되었습니다!`);
         }
 
         function updateTimerDisplay() {
@@ -854,9 +887,15 @@
         }
 
         function startTimer() {
-            if (!gameState.isTimerRunning && gameState.currentTimer > 0) {
+            if (gameState.currentTimer <= 0) {
+                showFloatingWisdom('먼저 시간을 설정해주세요! (5분/10분/20분 버튼 클릭)');
+                return;
+            }
+            
+            if (!gameState.isTimerRunning) {
                 gameState.isTimerRunning = true;
                 document.getElementById('start-btn').textContent = '진행중...';
+                showFloatingWisdom('명상 타이머가 시작되었습니다! 🧘‍♀️');
                 
                 gameState.timerInterval = setInterval(() => {
                     gameState.currentTimer--;
@@ -864,26 +903,46 @@
                     
                     if (gameState.currentTimer <= 0) {
                         pauseTimer();
-                        showAchievement('명상 완료!', '명상을 완료했습니다! +50 경험치');
+                        showAchievement('🎉 명상 완료!', '명상을 완료했습니다! +50 경험치');
                         gameState.experience += 50;
                         gameState.wisdom += 25;
                         updateStats();
                         checkLevelUp();
+                        
+                        // 완료 알림음 (브라우저 알림)
+                        if (navigator.vibrate) {
+                            navigator.vibrate([500, 200, 500]);
+                        }
+                        
+                        // 완료 메시지
+                        setTimeout(() => {
+                            showFloatingWisdom('🌟 훌륭합니다! 마음이 더욱 평온해졌습니다');
+                        }, 2000);
                     }
                 }, 1000);
+            } else {
+                showFloatingWisdom('이미 타이머가 실행 중입니다!');
             }
         }
 
         function pauseTimer() {
             gameState.isTimerRunning = false;
-            clearInterval(gameState.timerInterval);
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
             document.getElementById('start-btn').textContent = '시작';
+            
+            if (gameState.currentTimer > 0) {
+                showFloatingWisdom('타이머가 일시정지되었습니다');
+            }
         }
 
         function resetTimer() {
             pauseTimer();
             gameState.currentTimer = 0;
             updateTimerDisplay();
+            showFloatingWisdom('타이머가 리셋되었습니다');
         }
 
         // 지혜 표시
